@@ -6,8 +6,23 @@ export function activate(context: vscode.ExtensionContext) {
 	
 	console.log('Code-repeater is now active!');
 
-	let disposable = vscode.commands.registerCommand('code-repeater.run', () => {
+	let custom = vscode.commands.registerCommand('code-repeater.custom', () => {
+		vscode.window.showInputBox().then(data=>{
+			console.log(data);
+			if(data!==undefined){
+				if(/^[0-9]+$/.test(data) && +data>0)
+					start(+data);
+				else
+					vscode.window.showErrorMessage("Invalid property");
+			}
+		});
+	});
 
+	let disposable = vscode.commands.registerCommand('code-repeater.run', () => {
+		start();
+	});
+
+	function start(delay: number = 20){
 		const editor = vscode.window.activeTextEditor;
 		let start = editor?.selection.start||new vscode.Position(0,0);
 		let end = editor?.selection.end||new vscode.Position(0,0);
@@ -18,20 +33,7 @@ export function activate(context: vscode.ExtensionContext) {
 		let selectedText : Array<string> = editor?.document.getText(new vscode.Range(start,end)).split("").filter(e=>e.charCodeAt(0)!=13)||[""];
 		selectedText.forEach(e=>console.log(e.charCodeAt(0)));
 		editor?.edit(editBuilder => editBuilder.delete(new vscode.Range(start,end)));
-
-		new Promise(resolve=>{
-			let timer = 3;
-			vscode.window.showInformationMessage(timer.toString());
-			let interval = setInterval(()=>{
-				timer--;
-				if(!timer){
-					clearInterval(interval);
-					resolve(null);
-				}else
-					vscode.window.showInformationMessage(timer.toString());
-				
-			},1000);
-		}).then(()=>input());
+		setTimeout(()=>input(),1000);
 
 		function input(){
 			setTimeout(()=>{
@@ -44,11 +46,12 @@ export function activate(context: vscode.ExtensionContext) {
 					editor?.edit((editBuilder) => editBuilder.insert(editor.selection.active, selectedText.shift()||""));
 				if(selectedText.length)
 					input();
-			},20);
+			},delay);
 		}
-	});
+	}
 
 	context.subscriptions.push(disposable);
+	context.subscriptions.push(custom);
 }
 
 export function deactivate() {

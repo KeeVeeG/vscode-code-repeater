@@ -1,10 +1,10 @@
 {
 	"name": "code-repeater",
-	"displayName": "Code repeater",
+	"displayName": "Code Repeater",
 	"description": "Emulation of written code input",
 	"publisher": "AbaturovNikita",
-	"version": "1.0.0",
-	"repository": "",
+	"version": "1.1.0",
+	"repository": "https://github.com/KeeVeeG/vscode-code-repeater",
 	"engines": {
 		"vscode": "^1.57.0"
 	},
@@ -12,14 +12,19 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:code-repeater.run"
+		"onCommand:code-repeater.run",
+		"onCommand:code-repeater.custom"
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
 		"commands": [
 			{
 				"command": "code-repeater.run",
-				"title": "Code repeater"
+				"title": "Code Repeater"
+			},
+			{
+				"command": "code-repeater.custom",
+				"title": "Code Repeater Custom Delay (ms)"
 			}
 		]
 	},
