@@ -1,6 +1,8 @@
 # Code Repeater
 
-Emulation of written code input
+VS Code Extension for emulation of written code input
+
+https://marketplace.visualstudio.com/items?itemName=AbaturovNikita.code-repeater
 
 ## Usage
 
